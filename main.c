@@ -7,6 +7,7 @@ EXERCISE:
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <stdbool.h>
 #include <conio.h>
 #include <time.h>
@@ -28,6 +29,11 @@ typedef struct
     int direction_x;        //-1 = up, 1 = down, 0 = no movement in that axis
 } snake_t;
 
+typedef struct
+{
+    int position_x;
+    int position_y;
+} food_t;
 
 char display[SIZE_Y][SIZE_X];
 
@@ -39,16 +45,23 @@ void get_user_input(snake_t *snake);
 void move_snake(snake_t *snake);
 void clear_screen(void);
 void delay_milliseconds(int ms_delay);
+void update_food(food_t *food);
 
 int main(void)
 {
     snake_t snake;
+    food_t food;
     init_game(&snake, &food);
 
     while(true)
     {
         get_user_input(&snake);
         move_snake(&snake);
+        if(snake.seg_array[0].seg_x == food.position_x && snake.seg_array[0].seg_y == food.position_y)
+        {
+            update_food(&food);
+            snake.snake_size++;
+        }
         update_display(&snake, &food);
         delay_milliseconds(500);
         clear_screen();
@@ -64,6 +77,15 @@ void init_game(snake_t *snake, food_t *food)
     snake->direction_x = 1;
     snake->direction_y = 0;
 
+    srand(time(NULL));
+
+    update_food(food);
+}
+
+void update_food(food_t *food)
+{
+    food->position_x = rand() % (SIZE_X-1) + 1;
+    food->position_y = rand() % (SIZE_Y-1) + 1;
 }
 
 void draw_field(char ch)
@@ -88,6 +110,11 @@ void draw_snake(char ch, snake_t *snake)
     {
         display[snake->seg_array[i].seg_y][snake->seg_array[i].seg_x] = ch;
     }
+}
+
+void draw_food(char ch, food_t *food)
+{
+    display[food->position_y][food->position_x] = ch;
 }
 
 void move_snake(snake_t *snake)
@@ -162,6 +189,7 @@ void update_display(snake_t *snake, food_t *food)
 {
     draw_field('#');
     draw_snake('@', snake);
+    draw_food('*', food);
 
     for(int y = 0; y < SIZE_Y; y++)
     {
