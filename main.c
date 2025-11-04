@@ -7,6 +7,7 @@ EXERCISE:
 */
 
 #include <stdio.h>
+#include <time.h>
 
 #define SIZE_Y 20
 #define SIZE_X 20
@@ -32,6 +33,8 @@ void update_display(snake_t *snake, food_t *food);
 void draw_field(char ch);
 void draw_snake(char ch, snake_t *snake);
 void move_snake(snake_t *snake);
+void clear_screen(void);
+void delay_milliseconds(int ms_delay);
 
 int main(void)
 {
@@ -40,6 +43,9 @@ int main(void)
     {
         move_snake(&snake);
         update_display(&snake, &food);
+        delay_milliseconds(500);
+        clear_screen();
+    }
     return 0;
 }
 
@@ -95,5 +101,21 @@ void update_display(snake_t *snake, food_t *food)
             printf("%c", display[y][x]);
         }
         printf("\n");
+    }
+}
+
+void clear_screen(void)
+{
+    printf("\e[1;1H\e[2J");
+}
+
+void delay_milliseconds(int ms_delay)
+{
+    clock_t start_time = clock();
+    clock_t wait_ticks = (ms_delay * CLOCKS_PER_SEC) / 1000;
+
+    while ((clock() - start_time) < wait_ticks)
+    {
+        //do nothing
     }
 }
