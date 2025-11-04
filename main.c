@@ -31,10 +31,14 @@ char display[SIZE_Y][SIZE_X];
 void update_display(snake_t *snake, food_t *food);
 void draw_field(char ch);
 void draw_snake(char ch, snake_t *snake);
+void move_snake(snake_t *snake);
 
 int main(void)
 {
     snake_t snake;
+    while(true)
+    {
+        move_snake(&snake);
         update_display(&snake, &food);
     return 0;
 }
@@ -60,6 +64,23 @@ void draw_snake(char ch, snake_t *snake)
     for(int i = 0; i < snake->snake_size; i++)
     {
         display[snake->seg_array[i].seg_y][snake->seg_array[i].seg_x] = ch;
+    }
+}
+
+void move_snake(snake_t *snake)
+{
+    for (int seg_index = (snake->snake_size - 1); seg_index >= 0; seg_index--)
+    {
+        if (seg_index == 0)
+        {
+            snake->seg_array[seg_index].seg_x += snake->direction_x;
+            snake->seg_array[seg_index].seg_y += snake->direction_y; 
+        }
+        else
+        {
+            snake->seg_array[seg_index].seg_x = snake->seg_array[seg_index - 1].seg_x;
+            snake->seg_array[seg_index].seg_y = snake->seg_array[seg_index - 1].seg_y;
+        }
     }
 }
 void update_display(snake_t *snake, food_t *food)
