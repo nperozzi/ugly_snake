@@ -7,6 +7,8 @@ EXERCISE:
 */
 
 #include <stdio.h>
+#include <stdbool.h>
+#include <conio.h>
 #include <time.h>
 
 #define SIZE_Y 20
@@ -32,6 +34,8 @@ char display[SIZE_Y][SIZE_X];
 void update_display(snake_t *snake, food_t *food);
 void draw_field(char ch);
 void draw_snake(char ch, snake_t *snake);
+void init_game(snake_t *snake, food_t *food);
+void get_user_input(snake_t *snake);
 void move_snake(snake_t *snake);
 void clear_screen(void);
 void delay_milliseconds(int ms_delay);
@@ -39,14 +43,27 @@ void delay_milliseconds(int ms_delay);
 int main(void)
 {
     snake_t snake;
+    init_game(&snake, &food);
+
     while(true)
     {
+        get_user_input(&snake);
         move_snake(&snake);
         update_display(&snake, &food);
         delay_milliseconds(500);
         clear_screen();
     }
     return 0;
+}
+
+void init_game(snake_t *snake, food_t *food)
+{
+    snake->seg_array[0].seg_x = 15;
+    snake->seg_array[0].seg_y = 15;
+    snake->snake_size = 1;
+    snake->direction_x = 1;
+    snake->direction_y = 0;
+
 }
 
 void draw_field(char ch)
@@ -89,6 +106,58 @@ void move_snake(snake_t *snake)
         }
     }
 }
+
+void get_user_input(snake_t *snake)
+{
+    if(_kbhit())
+    {
+        char arrows_code = _getch();
+        if(arrows_code == -32)      //-32 is the keyboard arrow identifier code in my computer.
+        {
+            char key = _getch();
+            switch (key)
+            {
+                case 72:    //Arrow UP
+                    if(snake->direction_y == 1 || snake->direction_y == -1)
+                    {
+                        break;
+                    }    
+
+                    snake->direction_x = 0;
+                    snake->direction_y = -1;
+                    break;
+                case 80:    //Arrow DOWN
+                    if(snake->direction_y == 1 || snake->direction_y == -1)
+                    {
+                        break;
+                    }    
+
+                    snake->direction_x = 0;
+                    snake->direction_y = 1;
+                    break;
+                case 75:    //Arrow LEFT
+                    if(snake->direction_x == 1 || snake->direction_x == -1)
+                    {
+                        break;
+                    }    
+
+                    snake->direction_x = -1;
+                    snake->direction_y = 0;
+                    break;
+                case 77:    //Arrow RIGHT
+                    if(snake->direction_x == 1 || snake->direction_x == -1)
+                    {
+                        break;
+                    }    
+
+                    snake->direction_x = 1;
+                    snake->direction_y = 0;
+                    break;       
+            }
+        }
+    }
+}
+
 void update_display(snake_t *snake, food_t *food)
 {
     draw_field('#');
