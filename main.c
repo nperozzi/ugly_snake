@@ -1,11 +1,3 @@
-/*
-EXERCISE: 
-- make it 30*30
-- make it so that you come out the other side when you go through the wall
-- make it so that it leaves a trace (ETCH-A-SKETCH)
-- place food. When the snake eats, POINTS - it grows
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -46,6 +38,7 @@ void move_snake(snake_t *snake);
 void clear_screen(void);
 void delay_milliseconds(int ms_delay);
 void update_food(food_t *food, snake_t *snake);
+void test_snake_colition(snake_t *snake);
 
 int main(void)
 {
@@ -57,6 +50,7 @@ int main(void)
     {
         get_user_input(&snake);
         move_snake(&snake);
+        test_snake_colition(&snake);
         if(snake.seg_array[0].seg_x == food.position_x && snake.seg_array[0].seg_y == food.position_y)
         {
             
@@ -84,7 +78,17 @@ void init_game(snake_t *snake, food_t *food)
 
     update_food(food, snake);
 }
-    update_food(food);
+
+void test_snake_colition(snake_t *snake)
+{
+    for(int i = 1; i < snake->snake_size; i++)
+    {
+        if(snake->seg_array[0].seg_x == snake->seg_array[i].seg_x && snake->seg_array[0].seg_y == snake->seg_array[i].seg_y)
+        {
+            printf("Game Over\n");
+            exit(1);
+        }
+    }
 }
 
 void update_food(food_t *food, snake_t *snake)
