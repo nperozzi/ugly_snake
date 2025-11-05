@@ -39,6 +39,7 @@ void clear_screen(void);
 void delay_milliseconds(int ms_delay);
 void update_food(food_t *food, snake_t *snake);
 void test_snake_colition(snake_t *snake);
+void test_get_food(food_t *food, snake_t *snake);
 
 int main(void)
 {
@@ -51,14 +52,7 @@ int main(void)
         get_user_input(&snake);
         move_snake(&snake);
         test_snake_colition(&snake);
-        if(snake.seg_array[0].seg_x == food.position_x && snake.seg_array[0].seg_y == food.position_y)
-        {
-            
-            snake.snake_size++;
-            snake.seg_array[snake.snake_size - 1] = snake.seg_array[snake.snake_size - 2];
-
-            update_food(&food, &snake);
-        }
+        test_get_food(&food, &snake);
         update_display(&snake, &food);
         delay_milliseconds(500);
         clear_screen();
@@ -90,6 +84,20 @@ void test_snake_colition(snake_t *snake)
         }
     }
 }
+
+void test_get_food(food_t *food, snake_t *snake)
+{
+    if(snake->seg_array[0].seg_x == food->position_x && snake->seg_array[0].seg_y == food->position_y)
+    {
+        
+        snake->snake_size++;
+        snake->seg_array[snake->snake_size - 1] = snake->seg_array[snake->snake_size - 2];
+
+        update_food(food, snake);
+    }
+}
+
+
 
 void update_food(food_t *food, snake_t *snake)
 {
