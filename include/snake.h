@@ -16,7 +16,7 @@ typedef struct
 } snake_t;
 
 void get_user_input(snake_t *snake);
-void move_snake(snake_t *snake);
+void move_snake(snake_t *snake, int offset_x, int offset_y);
 void test_snake_colition(snake_t *snake);
 
 #endif      //SNAKE_H

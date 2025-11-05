@@ -1,15 +1,16 @@
 #include "render.h"
+#include <string.h>
 #include "stdio.h"
 
 char display[SIZE_Y][SIZE_X];
 
-void draw_field(char ch)
+static void draw_field(char ch, int offset_x, int offset_y)
 {
-    for (int y = 0; y < SIZE_Y; y++)
+    for (int y = offset_y; y < SIZE_Y; y++)
     {
-        for (int x = 0; x < SIZE_X; x++)
+        for (int x = offset_x; x < SIZE_X; x++)
         {
-            if(y == 0 || y == (SIZE_Y - 1) || x == 0 || x == (SIZE_X -1))
+            if(y == offset_y || y == (SIZE_Y - 1) || x == offset_x|| x == (SIZE_X -1))
             {
                 display[y][x] = ch;
             }
@@ -19,7 +20,7 @@ void draw_field(char ch)
     }
 }
 
-void draw_snake(char head_ch, char body_ch, snake_t *snake)
+static void draw_snake(char head_ch, char body_ch, snake_t *snake)
 {
     for(int i = 0; i < snake->snake_size; i++)
     {
@@ -34,14 +35,25 @@ void draw_snake(char head_ch, char body_ch, snake_t *snake)
     }
 }
 
-void draw_food(char ch, food_t *food)
+static void draw_food(char ch, food_t *food)
 {
     display[food->position_y][food->position_x] = ch;
 }
 
-void update_display(snake_t *snake, food_t *food)
+static void draw_score(unsigned int *score, int offset_x, int offset_y)
 {
-    draw_field('#');
+    char score_bar[SIZE_X];
+    sprintf(score_bar, "Score: %d", *score);
+    for(int i = 0; i < strlen(score_bar); i++)
+    {
+        display[offset_y][i] = score_bar[i];
+    }
+}
+
+void update_display(snake_t *snake, food_t *food, unsigned int *score)
+{
+    draw_score(score, 0, 0);
+    draw_field('#', 0, 1);
     draw_snake('O', 'o', snake);
     draw_food('*', food);
 

@@ -12,15 +12,16 @@ int main(void)
 {
     snake_t snake;
     food_t food;
+    unsigned int score = 0;
     init_game(&snake, &food);
 
     while(true)
     {
         get_user_input(&snake);
-        move_snake(&snake);
+        move_snake(&snake, 0, 1);
         test_snake_colition(&snake);
-        test_get_food(&food, &snake);
-        update_display(&snake, &food);
+        test_get_food(&food, &snake, &score);
+        update_display(&snake, &food, &score);
         delay_milliseconds(500);
         clear_screen();
     }
@@ -37,10 +38,8 @@ void init_game(snake_t *snake, food_t *food)
 
     srand(time(NULL));
 
-    update_food(food, snake);
+    update_food(food, snake, 0, 1);
 }
-
-
 
 void delay_milliseconds(int ms_delay)
 {

@@ -9,7 +9,7 @@ typedef struct
     int position_y;
 } food_t;
 
-void update_food(food_t *food, snake_t *snake);
-void test_get_food(food_t *food, snake_t *snake);
+void update_food(food_t *food, snake_t *snake, int offset_x, int offset_y);
+void test_get_food(food_t *food, snake_t *snake, unsigned int *score);
 
 #endif      //FOOD_H
