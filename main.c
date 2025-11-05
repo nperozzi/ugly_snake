@@ -45,7 +45,7 @@ void get_user_input(snake_t *snake);
 void move_snake(snake_t *snake);
 void clear_screen(void);
 void delay_milliseconds(int ms_delay);
-void update_food(food_t *food);
+void update_food(food_t *food, snake_t *snake);
 
 int main(void)
 {
@@ -59,8 +59,11 @@ int main(void)
         move_snake(&snake);
         if(snake.seg_array[0].seg_x == food.position_x && snake.seg_array[0].seg_y == food.position_y)
         {
-            update_food(&food);
+            
             snake.snake_size++;
+            snake.seg_array[snake.snake_size - 1] = snake.seg_array[snake.snake_size - 2];
+
+            update_food(&food, &snake);
         }
         update_display(&snake, &food);
         delay_milliseconds(500);
@@ -79,13 +82,29 @@ void init_game(snake_t *snake, food_t *food)
 
     srand(time(NULL));
 
+    update_food(food, snake);
+}
     update_food(food);
 }
 
-void update_food(food_t *food)
+void update_food(food_t *food, snake_t *snake)
 {
-    food->position_x = rand() % (SIZE_X-1) + 1;
-    food->position_y = rand() % (SIZE_Y-1) + 1;
+    bool is_food_position_valid = false;
+    while (!is_food_position_valid)
+    {
+        food->position_x = rand() % (SIZE_X - 2) + 1;
+        food->position_y = rand() % (SIZE_Y - 2) + 1;
+        is_food_position_valid = true;
+    
+        for (int i = 0; i < snake->snake_size; i++)
+        {
+            if(food->position_x == snake->seg_array[i].seg_x && food->position_y == snake->seg_array[i].seg_y)
+            {
+                is_food_position_valid = false;
+                break;
+            }
+        }
+    }
 }
 
 void draw_field(char ch)
