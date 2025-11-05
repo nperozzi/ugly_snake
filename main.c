@@ -242,6 +242,7 @@ void update_display(snake_t *snake, food_t *food)
 
 void clear_screen(void)
 {
+    printf("\033[H");
     printf("\e[1;1H\e[2J");
 }
 
