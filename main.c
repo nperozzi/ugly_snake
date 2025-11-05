@@ -31,7 +31,7 @@ char display[SIZE_Y][SIZE_X];
 
 void update_display(snake_t *snake, food_t *food);
 void draw_field(char ch);
-void draw_snake(char ch, snake_t *snake);
+void draw_snake(char head_ch, char body_ch, snake_t *snake);
 void init_game(snake_t *snake, food_t *food);
 void get_user_input(snake_t *snake);
 void move_snake(snake_t *snake);
@@ -127,11 +127,18 @@ void draw_field(char ch)
     }
 }
 
-void draw_snake(char ch, snake_t *snake)
+void draw_snake(char head_ch, char body_ch, snake_t *snake)
 {
     for(int i = 0; i < snake->snake_size; i++)
     {
-        display[snake->seg_array[i].seg_y][snake->seg_array[i].seg_x] = ch;
+        if(i == 0)
+        {
+            display[snake->seg_array[i].seg_y][snake->seg_array[i].seg_x] = head_ch;
+        }
+        else
+        {
+            display[snake->seg_array[i].seg_y][snake->seg_array[i].seg_x] = body_ch;
+        }
     }
 }
 
@@ -220,7 +227,7 @@ void get_user_input(snake_t *snake)
 void update_display(snake_t *snake, food_t *food)
 {
     draw_field('#');
-    draw_snake('@', snake);
+    draw_snake('O', 'o', snake);
     draw_food('*', food);
 
     for(int y = 0; y < SIZE_Y; y++)
