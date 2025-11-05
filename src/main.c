@@ -7,6 +7,7 @@
 
 void init_game(snake_t *snake, food_t *food);
 void delay_milliseconds(int ms_delay);
+unsigned int speedup(const unsigned int *score);
 
 int main(void)
 {
@@ -22,7 +23,7 @@ int main(void)
         test_snake_colition(&snake);
         test_get_food(&food, &snake, &score);
         update_display(&snake, &food, &score);
-        delay_milliseconds(500);
+        delay_milliseconds(speedup(&score));
         clear_screen();
     }
     return 0;
@@ -50,4 +51,13 @@ void delay_milliseconds(int ms_delay)
     {
         //do nothing
     }
+}
+
+unsigned int speedup(const unsigned int *score)
+{
+    int base_delay = 300;
+    int min_delay = 75;
+    int step = 20;
+
+    return min_delay > base_delay - (*score * step)? min_delay: base_delay - (*score * step);
 }
