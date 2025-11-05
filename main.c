@@ -132,6 +132,15 @@ void move_snake(snake_t *snake)
             snake->seg_array[seg_index].seg_y = snake->seg_array[seg_index - 1].seg_y;
         }
     }
+
+    if (snake->seg_array[0].seg_x <= 0)
+        snake->seg_array[0].seg_x = SIZE_X - 2;
+    if (snake->seg_array[0].seg_x >= SIZE_X - 1)
+        snake->seg_array[0].seg_x = 0 + 1;
+    if (snake->seg_array[0].seg_y <= 0)
+        snake->seg_array[0].seg_y = SIZE_Y - 2;
+    if (snake->seg_array[0].seg_y >= SIZE_Y - 1)
+        snake->seg_array[0].seg_y = 0 + 1;
 }
 
 void get_user_input(snake_t *snake)
