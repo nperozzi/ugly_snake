@@ -21,10 +21,10 @@ void move_snake(snake_t *snake, int offset_x, int offset_y)
         }
     }
 
-    const int playable_top_limit = offset_y + 1;
-    const int playable_bottom_limit = offset_y + SIZE_Y - 2;
-    const int playable_left_limit = offset_x + 1;
-    const int playable_right_limit = offset_x + SIZE_X - 2;
+     const int playable_top_limit = offset_y + 1;
+     const int playable_bottom_limit = SIZE_Y - 2;
+     const int playable_left_limit = offset_x + 1;
+     const int playable_right_limit = SIZE_X - 2;
 
     if (snake->seg_array[0].seg_x < playable_left_limit)
         snake->seg_array[0].seg_x = playable_right_limit;
@@ -32,7 +32,7 @@ void move_snake(snake_t *snake, int offset_x, int offset_y)
         snake->seg_array[0].seg_x = playable_left_limit;
     if (snake->seg_array[0].seg_y < playable_top_limit)
         snake->seg_array[0].seg_y = playable_bottom_limit;
-    if (snake->seg_array[0].seg_y >= playable_bottom_limit)
+    if (snake->seg_array[0].seg_y > playable_bottom_limit)
         snake->seg_array[0].seg_y = playable_top_limit;
 }
 
