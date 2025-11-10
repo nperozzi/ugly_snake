@@ -20,7 +20,7 @@ int main(void)
     {
         get_user_input(&snake);
         move_snake(&snake, 0, 1);
-        test_snake_colition(&snake);
+        test_snake_collision(&snake);
         test_get_food(&food, &snake, &score);
         update_display(&snake, &food, &score);
         delay_milliseconds(speedup(&score));

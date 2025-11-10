@@ -87,7 +87,7 @@ void get_user_input(snake_t *snake)
     }
 }
 
-void test_snake_colition(snake_t *snake)
+void test_snake_collision(snake_t *snake)
 {
     for(int i = 1; i < snake->snake_size; i++)
     {
