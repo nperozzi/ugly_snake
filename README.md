@@ -18,9 +18,3 @@ A tiny, terminal-based Snake game written in C.
 
 ## License
 - This repository is provided as-is for learning purposes. Feel free to reuse or modify.
-
-
-# TODO:
-* Display flickers. I should be redrawing the characters that change only.
-* A state-machine to make a "Start Page" and a "Game Over" page.
-
